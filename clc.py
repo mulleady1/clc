@@ -2,6 +2,19 @@
 
 import re, requests, os
 from bs4 import BeautifulSoup as BS
+from flask import Flask, render_template
+
+app = Flask(__name__)
+@app.route('/')
+def index():
+    print '***** request for /'
+    cities = findNearbyCities()
+    cities = cities[:1]
+    jobs = []
+    for city in cities:
+        jobs += findGoodJobsByCity(city)
+    return render_template('index.html', jobs=jobs)
+
 
 def findNearbyCities(baseCity='orangecounty'):
 	url = 'http://%s.craiglist.org' % baseCity
@@ -19,23 +32,26 @@ def findNearbyCities(baseCity='orangecounty'):
 	return cities
 
 def findGoodJobsByCity(city):
-    baseUrl = 'http://%s.craiglist.org' % city
-    jobListUrl = '%s/search/sof' % baseUrl
-    soup = BS(requests.get(jobListUrl).text)
-    p = re.compile(r'/sof/.*\.html')
-    allLinks = soup.find_all('a')
-    jobDetailLinks = [l for l in allLinks if p.search(l.get('href')) is not None]
-    processedUrls = []
-    jobs = []
-    for l in jobDetailLinks:
-        jobDetailsUrl = '%s%s' % (baseUrl, l.get('href'))
-        if jobDetailsUrl in processedUrls:
-            continue
-        processedUrls.append(jobDetailsUrl)
-        job = processJobDetails(jobDetailsUrl)
-        if job:
-            jobs.append(job)
-    return jobs
+    try:
+        baseUrl = 'http://%s.craiglist.org' % city
+        jobListUrl = '%s/search/sof' % baseUrl
+        soup = BS(requests.get(jobListUrl).text)
+        p = re.compile(r'/sof/.*\.html')
+        allLinks = soup.find_all('a')
+        jobDetailLinks = [l for l in allLinks if p.search(l.get('href')) is not None]
+        processedUrls = []
+        jobs = []
+        for l in jobDetailLinks:
+            jobDetailsUrl = '%s%s' % (baseUrl, l.get('href'))
+            if jobDetailsUrl in processedUrls:
+                continue
+            processedUrls.append(jobDetailsUrl)
+            job = processJobDetails(jobDetailsUrl)
+            if job:
+                jobs.append(job)
+        return jobs
+    except Error:
+        return []
 
 def processJobDetails(jobDetailsUrl):
     try:
@@ -47,9 +63,8 @@ def processJobDetails(jobDetailsUrl):
         return None
 
 if __name__ == '__main__':
-    cities = findNearbyCities()
-    #import pdb; pdb.set_trace()
-    #cities = cities[-1:]
-    goodJobs = [findGoodJobsByCity(city) for city in cities]
+    #cities = findNearbyCities()
+    #goodJobs = [findGoodJobsByCity(city) for city in cities]
+    app.run()
 
-  
+

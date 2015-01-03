@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<style>
+.container {
+    width: 1000px;
+    background: #eaeaea;
+    margin: auto;
+    margin-top: 40px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <ul>
+        {% for job in jobs %}
+        <li><a href="{{ job.url }}">{{ job.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>
