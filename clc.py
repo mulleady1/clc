@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+import re, requests, os
+from bs4 import BeautifulSoup as BS
+
+def findNearbyCities(baseCity='orangecounty'):
+	url = 'http://%s.craiglist.org' % baseCity
+	soup = BS(requests.get(url).text)
+	rightbar = soup.find(id='rightbar')
+	citiesContainer = rightbar.find(name='ul', attrs={'class':'acitem'})
+	links = citiesContainer.find_all('a')
+	p = re.compile(r'(?P<city>\w+).craigslist.org')
+	cities = []
+	for l in links:
+		x = p.search(l.get('href'))
+		if x:
+			city = x.group('city')
+			cities.append(city)
+	return cities
+
+def findGoodJobsByCity(city):
+    baseUrl = 'http://%s.craiglist.org' % city
+    jobListUrl = '%s/search/sof' % baseUrl
+    soup = BS(requests.get(jobListUrl).text)
+    p = re.compile(r'/sof/.*\.html')
+    allLinks = soup.find_all('a')
+    jobDetailLinks = [l for l in allLinks if p.search(l.get('href')) is not None]
+    processedUrls = []
+    jobs = []
+    for l in jobDetailLinks:
+        jobDetailsUrl = '%s%s' % (baseUrl, l.get('href'))
+        if jobDetailsUrl in processedUrls:
+            continue
+        processedUrls.append(jobDetailsUrl)
+        job = processJobDetails(jobDetailsUrl)
+        if job:
+            jobs.append(job)
+    return jobs
+
+def processJobDetails(jobDetailsUrl):
+    try:
+        soup = BS(requests.get(jobDetailsUrl).text)
+        title = soup.find(attrs={'class': 'postingtitle'}).text.strip()
+        body = soup.find(id='postingbody')
+        return { 'title': title, 'body': body, 'url': jobDetailsUrl }
+    except AttributeError:
+        return None
+
+if __name__ == '__main__':
+    cities = findNearbyCities()
+    #import pdb; pdb.set_trace()
+    #cities = cities[-1:]
+    goodJobs = [findGoodJobsByCity(city) for city in cities]
+
+  
