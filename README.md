@@ -1,4 +1,4 @@
-craiglist crawler
+craigslist crawler
 =================
 
 From what I understand, you can't search for jobs on 
