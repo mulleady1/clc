@@ -8,7 +8,7 @@ multiple cities, or when you're looking for telecommute
 work. 
 
 That's the motivation for this tool. It checks
-a default city's craiglist homepage, gets the nearby
+a default city's craigslist homepage, gets the nearby
 cities list, then aggregates all software jobs into
 a list. Each item in the list consists of the job posting's
 url, title, and body. 
