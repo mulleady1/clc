@@ -9,11 +9,13 @@ app = Flask(__name__)
 def index():
     print '***** request for /'
     cities = findNearbyCities()
+    # Debug.
     cities = cities[:1]
-    jobs = []
+    jobsByCity = []
     for city in cities:
-        jobs += findGoodJobsByCity(city)
-    return render_template('index.html', jobs=jobs)
+        jobs = findGoodJobsByCity(city)
+        jobsByCity.append({ 'city': city, 'jobs': jobs})
+    return render_template('index.html', jobsByCity=jobsByCity)
 
 
 def findNearbyCities(baseCity='orangecounty'):

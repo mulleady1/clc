@@ -1,0 +1,29 @@
+body {
+    font-family: sans-serif;
+}
+ul {
+    list-style: none;
+    margin-left: 15px;
+    padding: 0;
+}
+li { 
+    line-height: 1.5em;
+}
+a:link, a:visited { 
+    text-decoration: none;
+}
+a:hover, a:active { 
+    text-decoration: underline;
+}
+.container {
+    width: 1000px;
+    background: #eaeaea;
+    margin: auto;
+    margin-top: 40px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 15px;
+}
+.city-container {
+}
+

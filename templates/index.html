@@ -1,24 +1,21 @@
 <!doctype html>
 <html>
 <head>
-<style>
-.container {
-    width: 1000px;
-    background: #eaeaea;
-    margin: auto;
-    margin-top: 40px;
-    border-radius: 5px;
-    border: 1px solid #aaa;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 <div class="container">
-    <ul>
-        {% for job in jobs %}
-        <li><a href="{{ job.url }}">{{ job.title }}</a></li>
-        {% endfor %}
-    </ul>
+    {% for d in jobsByCity %}
+    <div class="city-container">
+        <h4 class="city">{{ d.city }}</h4>
+        <ul>
+            {% for job in d.jobs %}
+            <li><a href="{{ job.url }}">{{ job.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
 </div>
+<script src="{{ url_for('static', filename='clc.js' }}"></script>
 </body>
 </html>
