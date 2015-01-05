@@ -5,13 +5,16 @@
 </head>
 <body>
 <div class="container">
-    {% for city in cities %}
-    <div class="city-container">
-        <input type="checkbox" checked>
-        <span class="city-name">{{ city }}</span>
+    <div>
+       City: <input type="text" id="defaultcity">
     </div>
-    {% endfor %}
+    <div>
+       Job code: <input type="text" id="jobcode">
+    </div>
+    <div>
+       <button onclick="findNearbyCities();">Find nearby cities</button>
+    </div>
 </div>
-<script src="{{ url_for('static', filename='clc.js' }}"></script>
+<script src="{{ url_for('static', filename='clc.js') }}"></script>
 </body>
 </html>
