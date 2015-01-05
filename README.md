@@ -29,7 +29,7 @@ nearby cities (default is 'orangecounty')
 - List of nearby cities will have checkboxes to include/exclude
 from results (default is include)
 - Search button submits form, executes search for jobs
-in checked cities
+in checked cities or pulls from cache
 - Client side storage for user preferences/history
 (default city, job code, checked cities)
 
