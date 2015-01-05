@@ -26,4 +26,6 @@ a:hover, a:active {
 }
 .city-container {
 }
-
+.city-name {
+    margin-left: 20px;
+}

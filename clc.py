@@ -3,19 +3,24 @@
 import re, requests, os
 from bs4 import BeautifulSoup as BS
 from flask import Flask, render_template
+from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
+#mongo = PyMongo(app)
+
 @app.route('/')
 def index():
     print '***** request for /'
     cities = findNearbyCities()
+    print 'cities: %s' % cities
     # Debug.
-    cities = cities[:1]
-    jobsByCity = []
-    for city in cities:
-        jobs = findGoodJobsByCity(city)
-        jobsByCity.append({ 'city': city, 'jobs': jobs})
-    return render_template('index.html', jobsByCity=jobsByCity)
+    #cities = cities[:1]
+    #jobsByCity = []
+    #for city in cities:
+    #    jobs = findGoodJobsByCity(city)
+    #    jobsByCity.append({ 'city': city, 'jobs': jobs})
+    #return render_template('index.html', jobsByCity=jobsByCity)
+    return render_template('index.html', cities=cities)
 
 
 def findNearbyCities(baseCity='orangecounty'):

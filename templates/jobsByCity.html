@@ -5,10 +5,14 @@
 </head>
 <body>
 <div class="container">
-    {% for city in cities %}
+    {% for d in jobsByCity %}
     <div class="city-container">
-        <input type="checkbox" checked>
-        <span class="city-name">{{ city }}</span>
+        <h4 class="city">{{ d.city }}</h4>
+        <ul>
+            {% for job in d.jobs %}
+            <li><a href="{{ job.url }}">{{ job.title }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
     {% endfor %}
 </div>
