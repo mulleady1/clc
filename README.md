@@ -15,3 +15,30 @@ url, title, and body.
 
 I'll be adding export options and probably a web interface
 next, along with filters.
+
+features
+========
+For my own sanity I wrote out the current requirements
+of the tool. 
+
+clc web
+-------
+- Index page with option to enter default city and show
+nearby cities (default is 'orangecounty')
+- Enter 3 letter job code (default is 'sof')
+- List of nearby cities will have checkboxes to include/exclude
+from results (default is include)
+- Search button submits form, executes search for jobs
+in checked cities
+- Client side storage for user preferences/history
+(default city, job code, checked cities)
+
+clc daemon
+----------
+- Daily check for jobs
+- Run search based off config file specifying default city,
+nearby cities, and job codes
+- Filter jobs by metrics specified in config file (salary,
+telecommute, keywords)
+- Send email to addresses in config file
+
