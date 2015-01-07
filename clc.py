@@ -2,7 +2,7 @@
 
 import re, requests, os
 from bs4 import BeautifulSoup as BS
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 #from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
@@ -11,17 +11,21 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     print '***** request for /'
-    #cities = findNearbyCities()
-    # Debug.
-    #cities = cities[:1]
-    #jobsByCity = []
-    #for city in cities:
-    #    jobs = findGoodJobsByCity(city)
-    #    jobsByCity.append({ 'city': city, 'jobs': jobs})
-    #return render_template('index.html', jobsByCity=jobsByCity)
-    #return render_template('index.html', cities=cities)
     return render_template('index.html')
 
+@app.route('/search')
+def search():
+    defaultcity = request.args['defaultcity']
+    jobcode = request.args['jobcode']
+    cities = findNearbyCities(defaultcity)
+    # Debug.
+    cities = cities[:1]
+    jobsByCity = []
+    for city in cities:
+        jobs = findGoodJobsByCity(city, jobcode)
+        jobsByCity.append({ 'city': city, 'jobs': jobs})
+    return render_template('results.html', jobsByCity=jobsByCity)
+    #return render_template('index.html', cities=cities)
 
 def findNearbyCities(baseCity='orangecounty'):
 	url = 'http://%s.craiglist.org' % baseCity
@@ -38,10 +42,10 @@ def findNearbyCities(baseCity='orangecounty'):
 			cities.append(city)
 	return cities
 
-def findGoodJobsByCity(city):
+def findGoodJobsByCity(city, jobcode='sof'):
     try:
         baseUrl = 'http://%s.craiglist.org' % city
-        jobListUrl = '%s/search/sof' % baseUrl
+        jobListUrl = '%s/search/%s' % (baseUrl, jobcode)
         soup = BS(requests.get(jobListUrl).text)
         p = re.compile(r'/sof/.*\.html')
         allLinks = soup.find_all('a')

@@ -4,17 +4,29 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-<div class="container">
-    <div>
-       City: <input type="text" id="defaultcity">
-    </div>
-    <div>
-       Job code: <input type="text" id="jobcode">
-    </div>
-    <div>
-       <button onclick="findNearbyCities();">Find nearby cities</button>
+<div class="header">
+    <div class="header-content">
+        clc
     </div>
 </div>
+<div class="container">
+    <form id="form">
+        <div>
+           <label>City</label>
+           <input type="text" id="defaultcity" name="defaultcity">
+        </div>
+        <div>
+           <label>Job code</label>
+           <input type="text" id="jobcode" name="jobcode">
+        </div>
+        <div>
+           <button onclick="findNearbyCities();">Find nearby cities</button>
+        </div>
+    </form>
+</div>
+<div class="container" id="results">
+</div>
+<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='clc.js') }}"></script>
 </body>
 </html>
