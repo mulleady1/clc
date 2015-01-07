@@ -18,15 +18,16 @@ def search():
     print '***** request for /search'
     defaultcity = request.args['defaultcity']
     jobcode = request.args['jobcode']
+    truncate = request.args['truncate']
     cities = findNearbyCities(defaultcity)
     # Debug.
-    cities = cities[:1]
+    if truncate:
+        cities = cities[:3]
     jobsByCity = []
     for city in cities:
         jobs = findGoodJobsByCity(city, jobcode)
         jobsByCity.append({ 'city': city, 'jobs': jobs})
     return render_template('results.html', jobsByCity=jobsByCity)
-    #return render_template('index.html', cities=cities)
 
 def findNearbyCities(baseCity='orangecounty'):
 	url = 'http://%s.craiglist.org' % baseCity
