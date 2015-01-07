@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import re, requests, os
+import re, requests, os, sys
 from bs4 import BeautifulSoup as BS
 from flask import Flask, render_template, request
 #from flask.ext.pymongo import PyMongo
@@ -16,11 +16,15 @@ def index():
 @app.route('/search')
 def search():
     print '***** request for /search'
-    defaultcity = request.args['defaultcity']
-    jobcode = request.args['jobcode']
-    truncate = request.args['truncate']
-    cities = findNearbyCities(defaultcity)
-    # Debug.
+    baseCity = request.args.get('defaultcity') or 'orangecounty'
+    jobcode = request.args.get('jobcode') or 'sof'
+    truncate = request.args.get('truncate') or None
+
+    print 'baseCity: %s' % baseCity
+    print 'jobcode:  %s' % jobcode
+    print 'truncate: %s' % truncate
+
+    cities = findNearbyCities(baseCity)
     if truncate:
         cities = cities[:3]
     jobsByCity = []
@@ -29,7 +33,7 @@ def search():
         jobsByCity.append({ 'city': city, 'jobs': jobs})
     return render_template('results.html', jobsByCity=jobsByCity)
 
-def findNearbyCities(baseCity='orangecounty'):
+def findNearbyCities(baseCity):
 	url = 'http://%s.craiglist.org' % baseCity
 	soup = BS(requests.get(url).text)
 	rightbar = soup.find(id='rightbar')
@@ -44,7 +48,7 @@ def findNearbyCities(baseCity='orangecounty'):
 			cities.append(city)
 	return cities
 
-def findGoodJobsByCity(city, jobcode='sof'):
+def findGoodJobsByCity(city, jobcode):
     try:
         baseUrl = 'http://%s.craiglist.org' % city
         jobListUrl = '%s/search/%s' % (baseUrl, jobcode)
