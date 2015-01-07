@@ -1,6 +1,7 @@
 body {
     margin: 0;
     font-family: sans-serif;
+    padding-bottom: 20px;
 }
 ul {
     list-style: none;
@@ -17,10 +18,10 @@ form label {
     width: 80px;
     display: inline-block;
 }
-form button {
+form button, form input[type=submit] {
     width: 250px;
 }
-button {
+button, input[type=submit] {
     padding: 7px 15px;
     background: #fff;
     color: #2aa;
@@ -29,7 +30,7 @@ button {
     cursor: pointer;
     font-size: 14px;
 }
-button:hover {
+button:hover, input[type=submit]:hover  {
     background: #2aa;
     color: #fff;
 }

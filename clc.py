@@ -15,6 +15,7 @@ def index():
 
 @app.route('/search')
 def search():
+    print '***** request for /search'
     defaultcity = request.args['defaultcity']
     jobcode = request.args['jobcode']
     cities = findNearbyCities(defaultcity)
