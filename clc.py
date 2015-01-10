@@ -76,7 +76,7 @@ def findGoodJobsByCity(city, jobcode):
         baseUrl = 'http://%s.craiglist.org' % city
         jobListUrl = '%s/search/%s' % (baseUrl, jobcode)
         soup = BS(requests.get(jobListUrl).text)
-        p = re.compile(r'/sof/.*\.html')
+        p = re.compile(r'/%s/.*\.html' % jobcode)
         allLinks = soup.find_all('a')
         jobDetailLinks = [l for l in allLinks if p.search(l.get('href')) is not None]
         processedUrls = []
