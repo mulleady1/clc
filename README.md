@@ -1,20 +1,18 @@
 craigslist crawler
 =================
 
-From what I understand, you can't search for jobs on 
-craigslist in a larger scope than your current city. 
-This is frustrating when you live on the border of 
-multiple cities, or when you're looking for telecommute
-work. 
+It can be frustrating that you can't search for jobs on 
+craigslist in a larger scope than your current city,
+especially when you live on the border of multiple cities, 
+or if you're looking for telecommute work. 
 
-That's the motivation for this tool. It checks
-a default city's craigslist homepage, gets the nearby
-cities list, then aggregates all software jobs into
-a list. Each item in the list consists of the job posting's
-url, title, and body. 
+That's the motivation for this tool. It checks a base 
+city's craigslist homepage for the nearby cities list. 
+From there you select cities and enter the job code to 
+search for jobs in your cities of interest.
 
-I'll be adding export options and probably a web interface
-next, along with filters.
+I'll be adding filters next and a better display of job
+search results (tabbed navigation maybe).
 
 features
 ========
@@ -25,9 +23,9 @@ clc web
 -------
 - Index page with option to enter default city and show
 nearby cities (default is 'orangecounty')
-- Enter 3 letter job code (default is 'sof')
 - List of nearby cities will have checkboxes to include/exclude
-from results (default is include)
+from results (default is exclude)
+- Enter 3 letter job code (default is 'sof')
 - Search button submits form, executes search for jobs
 in checked cities or pulls from cache
 - Client side storage for user preferences/history
