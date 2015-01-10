@@ -1,0 +1,8 @@
+install git, virtualenvwrapper
+add 'source /usr/local/bin/virtualenvwrapper.sh' to .bash_rc/.bash_profile
+mkvirtualenv clc
+workon clc
+git clone https://github.com/mulleady1/clc.git
+pip install -r requirements.txt
+./clc.py
+

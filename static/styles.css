@@ -74,10 +74,11 @@ a:hover, a:active {
 #job-search-results, #city-search-results {
     display: none;
 }
-.back {
+.nav a {
     cursor: pointer;
+    margin-right: 15px;
 }
-.back img {
+.nav img {
     width: 10px;
     height: 20px;
 }

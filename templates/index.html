@@ -10,7 +10,10 @@
     </div>
 </div>
 <div class="container" id="form-container">
-    <form id="form" action="search">
+    <div class="nav">
+        <a class="forward forward-1" style="display: none"><img src="{{ url_for('static', filename='forward_arrow.png') }}"></a>
+    </div>
+    <form class="citysearch" action="citysearch">
         <div>
            <label>City</label>
            <input type="text" name="defaultcity" value="orangecounty">
@@ -20,8 +23,8 @@
         </div>
     </form>
 </div>
-<div class="container" id="job-search-results"></div>
 <div class="container" id="city-search-results"></div>
+<div class="container" id="job-search-results"></div>
 <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='clc.js') }}"></script>
 </body>
