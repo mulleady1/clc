@@ -13,6 +13,23 @@ def index():
     print '***** request for /'
     return render_template('index.html')
 
+@app.route('/citysearch')
+def citySearch():
+    print '***** request for /citysearch'
+    baseCity = request.args.get('defaultcity') or 'orangecounty'
+    print 'baseCity: %s' % baseCity
+    cities = [baseCity] + findNearbyCities(baseCity)
+    return render_template('city_search_results.html', cities=cities)
+
+@app.route('/jobsearch')
+def jobSearch():
+    print '***** request for /jobsearch'
+    cities = request.args.get('cities')
+    print 'baseCity: %s' % baseCity
+    cities = [baseCity] + findNearbyCities(baseCity)
+    return render_template('city_search_results.html', cities=cities)
+
+
 @app.route('/search')
 def search():
     print '***** request for /search'

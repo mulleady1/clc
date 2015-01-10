@@ -24,12 +24,13 @@
            <input type="checkbox" name="truncate" checked>
         </div>
         <div>
-           <button>Search</button>
+           <button id="citysearch">Search for cities</button>
+           <button id="jobsearch">Search</button>
         </div>
     </form>
 </div>
-<div class="container" id="results">
-</div>
+<div class="container" id="job-search-results"></div>
+<div class="container" id="city-search-results"></div>
 <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='clc.js') }}"></script>
 </body>
