@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import re, requests, os, sys
+import re, requests, os, sys, json
 from bs4 import BeautifulSoup as BS
 from flask import Flask, render_template, request
 #from flask.ext.pymongo import PyMongo
@@ -24,10 +24,16 @@ def citySearch():
 @app.route('/jobsearch')
 def jobSearch():
     print '***** request for /jobsearch'
-    cities = request.args.get('cities')
-    print 'baseCity: %s' % baseCity
-    cities = [baseCity] + findNearbyCities(baseCity)
-    return render_template('city_search_results.html', cities=cities)
+    #cities = json.loads(request.args.get('cities'))
+    cities = request.args.getlist('city')
+    jobcode = request.args.get('jobcode') or 'sof'
+    print 'cities: %s' % cities
+    print 'jobcode: %s' % jobcode
+    jobsByCity = []
+    for city in cities:
+        jobs = findGoodJobsByCity(city, jobcode)
+        jobsByCity.append({ 'city': city, 'jobs': jobs})
+    return render_template('job_search_results.html', jobsByCity=jobsByCity)
 
 
 @app.route('/search')

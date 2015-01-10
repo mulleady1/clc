@@ -18,6 +18,9 @@ form label {
     width: 80px;
     display: inline-block;
 }
+form button, form input[type=submit] {
+    width: 250px;
+}
 button, input[type=submit] {
     padding: 7px 15px;
     background: #fff;
@@ -62,11 +65,19 @@ a:hover, a:active {
     border: 1px solid #eaeaea;
     padding: 15px;
 }
-.city-container {
+.container > div {
+    margin-bottom: 10px;
 }
 .city-name {
     margin-left: 20px;
 }
 #job-search-results, #city-search-results {
     display: none;
+}
+.back {
+    cursor: pointer;
+}
+.back img {
+    width: 10px;
+    height: 20px;
 }

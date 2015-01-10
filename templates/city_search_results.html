@@ -1,6 +1,24 @@
-{% for city in cities %}
-<div class="city">
-    <input type="checkbox" value="{{ city }}" checked>
-    <span>{{ city }}</span>
+<div>
+    <a class="back back-1"><img src="{{ url_for('static', filename='back_arrow.png') }}"></a>
 </div>
-{% endfor %}
+<div>
+    <input type="checkbox" id="checkall">
+    <span>Check all</span>
+</div>
+<form class="jobsearch">
+    <div class="cities-container">
+        {% for city in cities %}
+        <div class="city">
+            <input type="checkbox" name="city" value="{{ city }}">
+            <span>{{ city }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+       <label>Job code</label>
+       <input type="text" name="jobcode" value="sof">
+    </div>
+    <div>
+       <button id="jobsearch">Search for jobs</button>
+    </div>
+</form>

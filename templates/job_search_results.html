@@ -1,7 +1,6 @@
 <div>
     <a class="back back-2"><img src="{{ url_for('static', filename='back_arrow.png') }}"></a>
 </div>
-<div class="cities-container">
 {% for d in jobsByCity %}
 <div class="city-container">
     <h4 class="city">{{ d.city }}</h4>
