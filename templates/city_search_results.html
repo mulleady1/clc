@@ -10,8 +10,8 @@
     <div class="cities-container">
         {% for city in cities %}
         <div class="city">
-            <input type="checkbox" name="city" value="{{ city }}">
-            <span>{{ city }}</span>
+            <input type="checkbox" id="city-{{ city }}" name="city" value="{{ city }}">
+            <label for="city-{{ city }}">{{ city }}</label>
         </div>
         {% endfor %}
     </div>
