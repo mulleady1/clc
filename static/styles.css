@@ -1,7 +1,9 @@
 body {
     margin: 0;
-    font-family: sans-serif;
     padding-bottom: 20px;
+}
+body, input, button {
+    font-family: 'Open Sans', sans-serif;
 }
 ul {
     list-style: none;
@@ -15,11 +17,11 @@ form > div {
     margin: 10px 0;
 }
 form label {
-    width: 80px;
+    width: 75px;
     display: inline-block;
 }
 form button, form input[type=submit] {
-    width: 250px;
+    width: 270px;
 }
 button, input[type=submit] {
     padding: 7px 15px;
