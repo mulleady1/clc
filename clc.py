@@ -55,7 +55,7 @@ def findNearbyCities(baseCity):
 def findGoodJobsByCity(city, jobcode, keywords):
     try:
         baseUrl = 'http://%s.craiglist.org' % city
-        jobListUrl = '%s/search/%s' % (baseUrl, jobcode)
+        jobListUrl = '%s/search/%s?query=%s' % (baseUrl, jobcode, keywords)
         soup = BS(requests.get(jobListUrl).text)
         p = re.compile(r'/%s/.*\.html' % jobcode)
         allLinks = soup.find_all('a')
@@ -67,24 +67,18 @@ def findGoodJobsByCity(city, jobcode, keywords):
             if jobDetailsUrl in processedUrls:
                 continue
             processedUrls.append(jobDetailsUrl)
-            job = processJobDetails(jobDetailsUrl, keywords)
+            job = processJobDetails(jobDetailsUrl)
             if job:
                 jobs.append(job)
         return jobs
     except Exception:
         return []
 
-def processJobDetails(jobDetailsUrl, keywords):
+def processJobDetails(jobDetailsUrl):
     try:
         soup = BS(requests.get(jobDetailsUrl).text)
         title = soup.find(attrs={'class': 'postingtitle'}).text.strip()
         body = soup.find(id='postingbody')
-        if keywords:
-            for kw in keywords.split():
-                if kw.lower() in body.text.lower():
-                    break
-            else:
-                return None
         return { 'title': title, 'body': body, 'url': jobDetailsUrl }
     except AttributeError:
         return None

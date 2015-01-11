@@ -16,7 +16,7 @@ li {
 form > div {
     margin: 10px 0;
 }
-form label {
+.input-label {
     width: 75px;
     display: inline-block;
 }
