@@ -27,34 +27,15 @@ def jobSearch():
     #cities = json.loads(request.args.get('cities'))
     cities = request.args.getlist('city')
     jobcode = request.args.get('jobcode') or 'sof'
+    keywords = request.args.get('keywords') or None
     print 'cities: %s' % cities
     print 'jobcode: %s' % jobcode
+    print 'keywords: %s' % keywords
     jobsByCity = []
     for city in cities:
-        jobs = findGoodJobsByCity(city, jobcode)
+        jobs = findGoodJobsByCity(city, jobcode, keywords)
         jobsByCity.append({ 'city': city, 'jobs': jobs})
     return render_template('job_search_results.html', jobsByCity=jobsByCity)
-
-
-@app.route('/search')
-def search():
-    print '***** request for /search'
-    baseCity = request.args.get('defaultcity') or 'orangecounty'
-    jobcode = request.args.get('jobcode') or 'sof'
-    truncate = request.args.get('truncate') or None
-
-    print 'baseCity: %s' % baseCity
-    print 'jobcode:  %s' % jobcode
-    print 'truncate: %s' % truncate
-
-    cities = findNearbyCities(baseCity)
-    if truncate:
-        cities = cities[:3]
-    jobsByCity = []
-    for city in cities:
-        jobs = findGoodJobsByCity(city, jobcode)
-        jobsByCity.append({ 'city': city, 'jobs': jobs})
-    return render_template('results.html', jobsByCity=jobsByCity)
 
 def findNearbyCities(baseCity):
 	url = 'http://%s.craiglist.org' % baseCity
@@ -71,7 +52,7 @@ def findNearbyCities(baseCity):
 			cities.append(city)
 	return cities
 
-def findGoodJobsByCity(city, jobcode):
+def findGoodJobsByCity(city, jobcode, keywords):
     try:
         baseUrl = 'http://%s.craiglist.org' % city
         jobListUrl = '%s/search/%s' % (baseUrl, jobcode)
@@ -86,18 +67,24 @@ def findGoodJobsByCity(city, jobcode):
             if jobDetailsUrl in processedUrls:
                 continue
             processedUrls.append(jobDetailsUrl)
-            job = processJobDetails(jobDetailsUrl)
+            job = processJobDetails(jobDetailsUrl, keywords)
             if job:
                 jobs.append(job)
         return jobs
-    except Error:
+    except Exception:
         return []
 
-def processJobDetails(jobDetailsUrl):
+def processJobDetails(jobDetailsUrl, keywords):
     try:
         soup = BS(requests.get(jobDetailsUrl).text)
         title = soup.find(attrs={'class': 'postingtitle'}).text.strip()
         body = soup.find(id='postingbody')
+        if keywords:
+            for kw in keywords.split():
+                if kw.lower() in body.text.lower():
+                    break
+            else:
+                return None
         return { 'title': title, 'body': body, 'url': jobDetailsUrl }
     except AttributeError:
         return None

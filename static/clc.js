@@ -9,6 +9,7 @@ $(document).ready(function() {
         event.preventDefault();
         $buttonEl.html('Loading...');
         $buttonEl.prop('disabled', true);
+        //history.pushState({ state: 'citysearch' }, '', url);
         $.get(url).then(function(results) {
             $el.html(results);
             $el.show();
@@ -28,9 +29,11 @@ $(document).ready(function() {
                 $previousEl.show();
                 $forwardEl = $('a.forward-1');
                 $forwardEl.show();
+                //history.back();
                 $forwardEl.on('click', function() {
                     $el.show();
                     $previousEl.hide();
+                    //history.forward();
                 });
             });
             $('#checkall').on('change', function() {
@@ -45,6 +48,7 @@ $(document).ready(function() {
                 event.preventDefault();
                 $buttonEl.html('Loading...');
                 $buttonEl.prop('disabled', true);
+                //history.pushState({ state: 'jobsearch' }, '', url);
                 $.get(url).then(function(results) {
                     $el.html(results);
                     $el.show();
@@ -57,9 +61,11 @@ $(document).ready(function() {
                         $previousEl.show();
                         $forwardEl = $('a.forward-2');
                         $forwardEl.show();
+                        //history.back();
                         $forwardEl.on('click', function() {
                             $el.show();
                             $previousEl.hide();
+                            //history.forward();
                         });
                     });
                 });
