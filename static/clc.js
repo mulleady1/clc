@@ -1,4 +1,56 @@
+var app = Sammy('body', function() {
 
+    this.get('#/', function() {
+        $('.container').hide();
+        $('#form-container').show();
+        return false;
+    });
+
+    this.get('#/citysearch', function() {
+        var data = $('form.citysearch').serialize(),
+            url  = '/citysearch?' + data;
+        $('button#citysearch').html('Loading...');
+        $('button#citysearch').prop('disabled', true);
+        $.get(url).then(function(results) {
+            $('#city-search-results').html(results);
+            $('.container').hide();
+            $('#city-search-results').show();
+            $('.forward-1').show();
+            $('button#citysearch').html('Search for cities');
+            $('button#citysearch').prop('disabled', false);
+
+            $('form.jobsearch input[type=checkbox]').each(function() {
+                $(this).on('change', storeCheckedPreference);
+                var city = $(this).val();
+                if (localStorage.getItem(city) != undefined) {
+                    $(this).prop('checked', true);
+                }
+            });
+        });
+        return false;
+    });
+
+    this.get('#/jobsearch', function() {
+        var data = $('form.jobsearch').serialize(),
+            url  = '/jobsearch?' + data;
+        $('button#jobsearch').prop('disabled', true);
+        $('button#jobsearch').html('Loading...');
+        $.get(url).then(function(results) {
+            $('#job-search-results').html(results);
+            $('.container').hide();
+            $('#job-search-results').show();
+            $('.forward-2').show();
+            $('button#jobsearch').prop('disabled', false);
+            $('button#jobsearch').html('Search for jobs');
+        });
+        return false;
+    });
+});
+$(document).ready(function() {
+    app.run('#/');
+});
+
+/*
 $(document).ready(function() {
     $('button#citysearch').on('click', function(event) {
         var data = $('form.citysearch').serialize(),
@@ -70,12 +122,10 @@ $(document).ready(function() {
                     });
                 });
             });
-
         });
     });
-
 });
-
+*/
 function storeCheckedPreference() {
     var city = $(this).val();
     if ($(this).is(':checked')) {
@@ -93,3 +143,4 @@ function checkAll(checked) {
         }
     });
 }
+
