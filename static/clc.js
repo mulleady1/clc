@@ -1,5 +1,11 @@
 var app = Sammy('body', function() {
 
+    var $container1El = $('#form-container'),
+        $container2El = $('#city-search-results'),
+        $container3El = $('#job-search-results'),
+        $buttonCitySearch = $('button#citysearch'),
+        $buttonJobSearch = $('button#jobsearch'),
+
     this.get('#/', function() {
         $('.container').hide();
         $('#form-container').show();
