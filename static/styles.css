@@ -44,9 +44,11 @@ input[type=text] {
     font-size: 14px;
 }
 a:link, a:visited { 
+    cursor: pointer;
     text-decoration: none;
 }
 a:hover, a:active { 
+    cursor: pointer;
     text-decoration: underline;
 }
 .header {
