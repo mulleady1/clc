@@ -6,15 +6,15 @@
     <input type="checkbox" id="checkall">
     <label for="checkall">Check all</label>
 </div>
-<form class="jobsearch">
-    <div class="cities-container">
-        {% for city in cities %}
-        <div class="city">
-            <input type="checkbox" id="city-{{ city }}" name="city" value="{{ city }}">
-            <label for="city-{{ city }}">{{ city }}</label>
-        </div>
-        {% endfor %}
+<div class="cities-container">
+    {% for city in cities %}
+    <div class="city">
+        <input type="checkbox" id="city-{{ city }}" class="city" name="city" value="{{ city }}">
+        <label for="city-{{ city }}">{{ city }}</label>
     </div>
+    {% endfor %}
+</div>
+<form class="jobsearch">
     <div>
        <label class="input-label">Job code</label>
        <input type="text" name="jobcode" value="sof">

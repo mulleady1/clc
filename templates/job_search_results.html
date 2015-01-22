@@ -1,13 +1,3 @@
-<div class="nav">
-    <a class="back back-2"><img src="{{ url_for('static', filename='back_arrow.png') }}"></a>
-</div>
-{% for d in jobsByCity %}
-<div class="city-container">
-    <h4 class="city">{{ d.city }}</h4>
-    <ul>
-        {% for job in d.jobs %}
-        <li><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></li>
-        {% endfor %}
-    </ul>
-</div>
+{% for job in jobs %}
+<li><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></li>
 {% endfor %}

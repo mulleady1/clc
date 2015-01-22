@@ -2,7 +2,7 @@
 
 import re, requests, os, sys, json
 from bs4 import BeautifulSoup as BS
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 #from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
@@ -25,17 +25,15 @@ def citySearch():
 def jobSearch():
     print '***** request for /jobsearch'
     #cities = json.loads(request.args.get('cities'))
-    cities = request.args.getlist('city')
+    city = request.args.get('city')
     jobcode = request.args.get('jobcode') or 'sof'
     keywords = request.args.get('keywords') or ''
-    print 'cities: %s' % cities
+    print 'city: %s' % city
     print 'jobcode: %s' % jobcode
     print 'keywords: %s' % keywords
-    jobsByCity = []
-    for city in cities:
-        jobs = findGoodJobsByCity(city, jobcode, keywords)
-        jobsByCity.append({ 'city': city, 'jobs': jobs})
-    return render_template('job_search_results.html', jobsByCity=jobsByCity)
+    jobs = findGoodJobsByCity(city, jobcode, keywords)
+    html = render_template('job_search_results.html', jobs=jobs)
+    return jsonify(html=html, city=city)
 
 def findNearbyCities(baseCity):
     url = 'http://%s.craiglist.org' % baseCity
