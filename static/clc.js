@@ -46,8 +46,9 @@ $(document).ready(function() {
 
                 event.preventDefault();
                 //history.pushState({ state: 'jobsearch' }, '', url);
-                $containerEl3.show();
                 $containerEl2.hide();
+                $containerEl3.show();
+                $containerEl3.children(':not(.nav)').remove();
 
                 $('input[type=checkbox][name=city]:checked').each(function() {
                     var city = $(this).val(),
