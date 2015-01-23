@@ -32,8 +32,8 @@ $(document).ready(function() {
                 $forwardEl.show();
                 //history.back();
                 $forwardEl.on('click', function() {
-                    $el.show();
-                    $previousEl.hide();
+                    $containerEl2.show();
+                    $containerEl1.hide();
                     //history.forward();
                 });
             });
