@@ -3,12 +3,13 @@ var clc = (function() {
     var $containerEl1 = $('#city-search-form'),
         $containerEl2 = $('#city-search-results'),
         $containerEl3 = $('#job-search-results'),
-        $forwardEl    = $('a.forward-1'),
+        $forwardEl1   = $('a.forward-1'),
+        $forwardEl2   = $('a.forward-2'),
         $buttonEl     = $('button#jobsearch');
 
     function citySearch(event) {
-        var data      = $('form.citysearch').serialize(),
-            url       = '/citysearch?' + data;
+        var data = $('form.citysearch').serialize(),
+            url  = '/citysearch?' + data;
         event.preventDefault();
         $buttonEl.html('Loading...');
         $buttonEl.prop('disabled', true);
@@ -31,23 +32,12 @@ var clc = (function() {
             $containerEl3.append(html);
             loadJobsByCity(url);
         });
-        $('a.back-2').on('click', function() {
-            var $forwardEl = $('a.forward-2');
-            $containerEl3.hide();
-            $containerEl2.show();
-            $forwardEl.show();
-            history.back();
-            $forwardEl.on('click', function() {
-                $containerEl3.show();
-                $containerEl2.hide();
-                history.forward();
-            });
-        });
     }
 
     function loadCities(url) {
         $.get(url).then(function(results) {
-            $containerEl2.html(results);
+            $containerEl2.children(':not(.nav)').remove();
+            $containerEl2.append(results);
             $containerEl2.show();
             $containerEl1.hide();
             $buttonEl.html('Search for cities');
@@ -59,17 +49,6 @@ var clc = (function() {
                 if (localStorage.getItem(city) != undefined) {
                     $(this).prop('checked', true);
                 }
-            });
-            $('a.back-1').on('click', function() {
-                $containerEl2.hide();
-                $containerEl1.show();
-                $forwardEl.show();
-                history.back();
-                $forwardEl.on('click', function() {
-                    $containerEl2.show();
-                    $containerEl1.hide();
-                    history.forward();
-                });
             });
             $('#checkall').on('change', clc.checkAll);
             $('button#jobsearch').on('click', clc.jobSearch);
@@ -109,12 +88,39 @@ var clc = (function() {
         });
     }
 
+    function back(loc) {
+        if (loc == 1) {
+            $containerEl2.hide();
+            $containerEl1.show();
+            $forwardEl1.show();
+        } else {
+            $containerEl3.hide();
+            $containerEl2.show();
+            $forwardEl2.show();
+        }
+        history.back();
+    }
+
+    function forward(loc) {
+        if (loc == 1) {
+            $containerEl1.hide();
+            $containerEl2.show();
+        } else {
+            $containerEl2.hide();
+            $containerEl3.show();
+        }
+        history.forward();
+    }
+
     return {
         citySearch: citySearch,
         jobSearch: jobSearch,
+        loadCities: loadCities,
+        loadJobsByCity: loadJobsByCity,
         storeCheckedPreference: storeCheckedPreference,
         checkAll: checkAll,
-        loadJobsByCity: loadJobsByCity
+        back: back,
+        forward: forward
     };
 
 }());
