@@ -18,11 +18,11 @@ form > div {
     margin: 10px 0;
 }
 .input-label {
-    width: 75px;
+    width: 100px;
     display: inline-block;
 }
 form button, form input[type=submit] {
-    width: 270px;
+    width: 296px;
 }
 button, input[type=submit] {
     padding: 7px 15px;

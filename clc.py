@@ -28,10 +28,14 @@ def jobSearch():
     city = request.args.get('city')
     jobcode = request.args.get('jobcode') or 'sof'
     keywords = request.args.get('keywords') or ''
+    parttime = request.args.get('is_parttime') or 0
+    tele = request.args.get('is_telecommuting') or 0
     print 'city: %s' % city
     print 'jobcode: %s' % jobcode
     print 'keywords: %s' % keywords
-    jobs = findGoodJobsByCity(city, jobcode, keywords)
+    print 'parttime: %s' % parttime
+    print 'tele: %s' % tele
+    jobs = findGoodJobsByCity(city, jobcode, keywords, parttime, tele)
     html = render_template('job_search_results.html', jobs=jobs)
     return jsonify(html=html, city=city)
 
@@ -51,10 +55,10 @@ def findNearbyCities(baseCity):
             cities.append(city)
     return cities
 
-def findGoodJobsByCity(city, jobcode, keywords):
+def findGoodJobsByCity(city, jobcode, keywords, parttime, tele):
     try:
         baseUrl = 'http://%s.craiglist.org' % city
-        jobListUrl = '%s/search/%s?query=%s' % (baseUrl, jobcode, keywords)
+        jobListUrl = '%s/search/%s?query=%s&is_parttime=%s&is_telecommuting=%s' % (baseUrl, jobcode, keywords, parttime, tele)
         print '***** searching for jobs at: %s' % jobListUrl
         soup = BS(requests.get(jobListUrl).text)
         p = re.compile(r'/%s/.*\.html' % jobcode)
