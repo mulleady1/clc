@@ -132,6 +132,12 @@ var clc = (function() {
         history.forward();
     }
 
+    $.get('/cities').then(function(results) {
+        $('input[name="defaultcity"]').autocomplete({
+            source: results
+        });
+    });
+
     return {
         citySearch: citySearch,
         jobSearch: jobSearch,

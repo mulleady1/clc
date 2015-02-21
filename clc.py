@@ -2,7 +2,7 @@
 
 import re, requests, os, sys, json
 from bs4 import BeautifulSoup as BS
-from flask import Flask, render_template, request, jsonify, abort
+from flask import Flask, render_template, request, jsonify, abort, Response
 #from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
@@ -12,6 +12,22 @@ app = Flask(__name__)
 def index():
     print '***** request for /'
     return render_template('index.html')
+
+@app.route('/cities')
+def cities():
+    print '***** request for /cities'
+    p = re.compile(r'//(?P<city>\w+).craigslist.')
+    soup = BS(requests.get('http://www.craigslist.org/about/sites').text)
+    links = soup.find_all('a')
+    cities = []
+    for link in links:
+        try:
+            m = p.search(link.get('href'))
+            cities.append(m.group('city'))
+        except:
+            pass
+    print cities
+    return Response(json.dumps(cities), content_type='application/json')
 
 @app.route('/citysearch')
 def citySearch():

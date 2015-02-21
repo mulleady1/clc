@@ -3,6 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='jquery-ui.min.css') }}">
 <link href='//fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -37,6 +38,7 @@
     </div>
 </div>
 <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
 <script src="{{ url_for('static', filename='clc.js') }}"></script>
 <script type="text/template" id="template-loading">
     <div id="{city}-container">
