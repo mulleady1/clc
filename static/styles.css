@@ -88,3 +88,8 @@ a:hover, a:active {
     width: 10px;
     height: 20px;
 }
+@media (max-width: 600px) {
+    .container {
+        margin-top: 0;
+    }
+}

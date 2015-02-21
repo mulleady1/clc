@@ -11,18 +11,16 @@ var clc = (function() {
         var data = $('form.citysearch').serialize(),
             url  = '/citysearch?' + data;
         event.preventDefault();
-        $buttonEl.html('Loading...');
-        $buttonEl.prop('disabled', true);
-        history.pushState({ state: 'citysearch' }, '', '#cities');
+        //history.pushState({ state: 'citysearch' }, '', '#cities');
+        location.hash = '#cities';
         loadCities(url);
     }
 
     function jobSearch(event) {
         var data = $('form.jobsearch').serialize();
         event.preventDefault();
-        history.pushState({ state: 'jobsearch' }, '', '#jobs');
-        $containerEl2.hide();
-        $containerEl3.show();
+        //history.pushState({ state: 'jobsearch' }, '', '#jobs');
+        location.hash = '#jobs';
         $containerEl3.children(':not(.nav)').remove();
 
         $('input[type=checkbox][name=city]:checked').each(function() {
@@ -35,13 +33,11 @@ var clc = (function() {
     }
 
     function loadCities(url) {
+        $containerEl2.children(':not(.nav)').remove();
+        $containerEl2.append('<div>Loading...</div>');
         $.get(url).then(function(results) {
             $containerEl2.children(':not(.nav)').remove();
             $containerEl2.append(results);
-            $containerEl2.show();
-            $containerEl1.hide();
-            $buttonEl.html('Search for cities');
-            $buttonEl.prop('disabled', false);
 
             $('input[type=checkbox][name=city]').each(function() {
                 $(this).on('change', clc.storeCheckedPreference);
@@ -52,6 +48,10 @@ var clc = (function() {
             });
             $('#checkall').on('change', clc.checkAll);
             $('button#jobsearch').on('click', clc.jobSearch);
+        }, function() {
+            var city = $('input[name="defaultcity"]').val();
+            $containerEl2.children(':not(.nav)').remove();
+            $containerEl2.append('<div>No results for "' + city + '".</div>');
         });
     }
 
@@ -88,6 +88,26 @@ var clc = (function() {
         });
     }
 
+    function hashChange() {
+        switch (location.hash) {
+            case '#cities':
+                $containerEl1.hide();
+                $containerEl2.show();
+                $containerEl3.hide();
+                break;
+            case '#jobs':
+                $containerEl1.hide();
+                $containerEl2.hide();
+                $containerEl3.show();
+                break;
+            default:
+                $containerEl1.show();
+                $containerEl2.hide();
+                $containerEl3.hide();
+                break;
+        }
+    }
+
     function back(loc) {
         if (loc == 1) {
             $containerEl2.hide();
@@ -119,6 +139,7 @@ var clc = (function() {
         loadJobsByCity: loadJobsByCity,
         storeCheckedPreference: storeCheckedPreference,
         checkAll: checkAll,
+        hashChange: hashChange,
         back: back,
         forward: forward
     };
@@ -127,5 +148,7 @@ var clc = (function() {
 
 $(document).ready(function() {
     $('button#citysearch').on('click', clc.citySearch);
+    location.hash = '';
+    $(window).on('hashchange', clc.hashChange);
 });
 

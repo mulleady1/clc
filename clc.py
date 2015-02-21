@@ -2,7 +2,7 @@
 
 import re, requests, os, sys, json
 from bs4 import BeautifulSoup as BS
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, abort
 #from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
@@ -19,6 +19,9 @@ def citySearch():
     baseCity = request.args.get('defaultcity') or 'orangecounty'
     print 'baseCity: %s' % baseCity
     cities = [baseCity] + findNearbyCities(baseCity)
+    if len(cities) == 1:
+        print 'Bad request for baseCity %s' % baseCity
+        abort(400)
     return render_template('city_search_results.html', cities=cities)
 
 @app.route('/jobsearch')
@@ -40,20 +43,23 @@ def jobSearch():
     return jsonify(html=html, city=city)
 
 def findNearbyCities(baseCity):
-    url = 'http://%s.craiglist.org' % baseCity
-    print '***** searching for nearby cities at: %s' % url
-    soup = BS(requests.get(url).text)
-    rightbar = soup.find(id='rightbar')
-    citiesContainer = rightbar.find(name='ul', attrs={'class':'acitem'})
-    links = citiesContainer.find_all('a')
-    p = re.compile(r'(?P<city>\w+).craigslist.org')
-    cities = []
-    for l in links:
-        x = p.search(l.get('href'))
-        if x:
-            city = x.group('city')
-            cities.append(city)
-    return cities
+    try:
+        url = 'http://%s.craiglist.org' % baseCity
+        print '***** searching for nearby cities at: %s' % url
+        soup = BS(requests.get(url).text)
+        rightbar = soup.find(id='rightbar')
+        citiesContainer = rightbar.find(name='ul', attrs={'class':'acitem'})
+        links = citiesContainer.find_all('a')
+        p = re.compile(r'(?P<city>\w+).craigslist.org')
+        cities = []
+        for l in links:
+            x = p.search(l.get('href'))
+            if x:
+                city = x.group('city')
+                cities.append(city)
+        return cities
+    except:
+        return []
 
 def findGoodJobsByCity(city, jobcode, keywords, parttime, tele):
     try:
