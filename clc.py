@@ -13,9 +13,9 @@ def index():
     print '***** request for /'
     return render_template('index.html')
 
-@app.route('/cities')
-def cities():
-    print '***** request for /cities'
+@app.route('/autocomplete')
+def autocomplete():
+    print '***** request for /autocomplete'
     p = re.compile(r'//(?P<city>\w+).craigslist.')
     soup = BS(requests.get('http://www.craigslist.org/about/sites').text)
     links = soup.find_all('a')
@@ -26,8 +26,13 @@ def cities():
             cities.append(m.group('city'))
         except:
             pass
-    print cities
-    return Response(json.dumps(cities), content_type='application/json')
+    jobcodes = json.loads(open('jobcodes.json').read())
+    results = {
+        'cities': cities,
+        'jobcodes': jobcodes
+    }
+    print 'results: %s' % results
+    return Response(json.dumps(results), content_type='application/json')
 
 @app.route('/citysearch')
 def citySearch():

@@ -48,6 +48,9 @@ var clc = (function() {
             });
             $('#checkall').on('change', clc.checkAll);
             $('button#jobsearch').on('click', clc.jobSearch);
+            $('input[name="jobcode"]').autocomplete({
+                source: clc.jobcodes 
+            });
         }, function() {
             var city = $('input[name="defaultcity"]').val();
             $containerEl2.children(':not(.nav)').remove();
@@ -132,10 +135,11 @@ var clc = (function() {
         history.forward();
     }
 
-    $.get('/cities').then(function(results) {
+    $.get('/autocomplete').then(function(results) {
         $('input[name="defaultcity"]').autocomplete({
-            source: results
+            source: results.cities
         });
+        clc.jobcodes = results.jobcodes;
     });
 
     return {

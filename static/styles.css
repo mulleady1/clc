@@ -100,3 +100,7 @@ a:hover, a:active {
         height: 200px;
     }
 }
+.ul-menu-item, .ui-widget {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+}
