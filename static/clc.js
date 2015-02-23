@@ -1,4 +1,6 @@
-var clc = (function() {
+var clc = clc || {};
+
+clc = (function() {
 
     var $containerEl1 = $('#city-search-form'),
         $containerEl2 = $('#city-search-results'),
@@ -51,6 +53,8 @@ var clc = (function() {
             $('input[name="jobcode"]').autocomplete({
                 source: clc.jobcodes 
             });
+            $('.clear-x').off('click', clc.clearField);
+            $('.clear-x').on('click', clc.clearField);
         }, function() {
             var city = $('input[name="defaultcity"]').val();
             $containerEl2.children(':not(.nav)').remove();
@@ -135,11 +139,18 @@ var clc = (function() {
         history.forward();
     }
 
+    function clearField(event) {
+        var input = $(this).closest('div').find('input[type="text"]');
+        input.val('');   
+        input.focus();
+    }
+
     $.get('/autocomplete').then(function(results) {
-        $('input[name="defaultcity"]').autocomplete({
-            source: results.cities
-        });
+        clc.cities = results.cities;
         clc.jobcodes = results.jobcodes;
+        $('input[name="defaultcity"]').autocomplete({
+            source: clc.cities
+        });
     });
 
     return {
@@ -151,13 +162,15 @@ var clc = (function() {
         checkAll: checkAll,
         hashChange: hashChange,
         back: back,
-        forward: forward
+        forward: forward,
+        clearField: clearField
     };
 
 }());
 
 $(document).ready(function() {
     $('button#citysearch').on('click', clc.citySearch);
+    $('.clear-x').on('click', clc.clearField);
     location.hash = '';
     $(window).on('hashchange', clc.hashChange);
 });

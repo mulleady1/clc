@@ -87,9 +87,24 @@ a:hover, a:active {
     width: 10px;
     height: 20px;
 }
+.ul-menu-item, .ui-widget {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+}
+.clear-x {
+    display: none;
+}
 @media (max-width: 1024px) {
     .container {
         margin-top: 0;
+    }
+    .clear-x {
+        width: 20px;
+        height: 18px;
+        position: relative;
+        top: 5px;
+        right: 29px;
+        display: inline;
     }
 }
 @media (min-width: 480px) {
@@ -99,8 +114,4 @@ a:hover, a:active {
         flex-wrap: wrap;
         height: 200px;
     }
-}
-.ul-menu-item, .ui-widget {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1em;
 }
