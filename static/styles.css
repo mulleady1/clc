@@ -79,6 +79,9 @@ a:hover, a:active {
 #job-search-results, #city-search-results {
     display: none;
 }
+.nav {
+    display: inline-block;
+}
 .nav a {
     cursor: pointer;
     margin-right: 15px;
@@ -105,6 +108,19 @@ a:hover, a:active {
         top: 5px;
         right: 29px;
         display: inline;
+    }
+    .nav {
+        position: absolute;
+        top: 10px;
+    }
+    .nav-back {
+        left: 10px;
+    }
+    .nav-forward {
+        right: 0px;
+    }
+    .title {
+        text-align: center;
     }
 }
 @media (min-width: 480px) {
