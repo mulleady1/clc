@@ -9,7 +9,8 @@ clc = (function() {
         $backEl1      = $('.container > .nav-back-1'),
         $backEl2      = $('.container > .nav-back-2'),
         $forwardEl1   = $('.container > .nav-forward-1'),
-        $forwardEl2   = $('.container > .nav-forward-2');
+        $forwardEl2   = $('.container > .nav-forward-2'),
+        isMobile      = false;
 
     function citySearch(event) {
         var data = $('form.citysearch').serialize(),
@@ -143,7 +144,7 @@ clc = (function() {
     function animate($el1, $el2, left) {
         $el1.hide();
         $el2.show();
-        if (!clc.isMobile) {
+        if (!isMobile) {
             return;
         }
         if (left) {
@@ -165,12 +166,12 @@ clc = (function() {
         });
     });
 
-    if (screen.width < 1025) {
-        clc.isMobile = true;
-        $backEl1     = $('.header > .nav-back-1');
-        $backEl2     = $('.header > .nav-back-2');
-        $forwardEl1  = $('.header > .nav-forward-1');
-        $forwardEl2  = $('.header > .nav-forward-2');
+    if ($(window).width() < 1025) {
+        isMobile    = true;
+        $backEl1    = $('.header > .nav-back-1');
+        $backEl2    = $('.header > .nav-back-2');
+        $forwardEl1 = $('.header > .nav-forward-1');
+        $forwardEl2 = $('.header > .nav-forward-2');
     }
 
     return {
