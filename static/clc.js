@@ -5,15 +5,17 @@ clc = (function() {
     var $containerEl1 = $('#city-search-form'),
         $containerEl2 = $('#city-search-results'),
         $containerEl3 = $('#job-search-results'),
-        $forwardEl1   = $('a.forward-1'),
-        $forwardEl2   = $('a.forward-2'),
-        $buttonEl     = $('button#jobsearch');
+        $buttonEl     = $('button#jobsearch'),
+        $backEl1      = $('.container > .nav-back-1'),
+        $backEl2      = $('.container > .nav-back-2'),
+        $forwardEl1   = $('.container > .nav-forward-1'),
+        $forwardEl2   = $('.container > .nav-forward-2');
 
     function citySearch(event) {
         var data = $('form.citysearch').serialize(),
             url  = '/citysearch?' + data;
         event.preventDefault();
-        //history.pushState({ state: 'citysearch' }, '', '#cities');
+        localStorage.setItem('defaultcity', $('[name="defaultcity"]').val());
         location.hash = '#cities';
         loadCities(url);
     }
@@ -21,7 +23,6 @@ clc = (function() {
     function jobSearch(event) {
         var data = $('form.jobsearch').serialize();
         event.preventDefault();
-        //history.pushState({ state: 'jobsearch' }, '', '#jobs');
         location.hash = '#jobs';
         $containerEl3.children(':not(.nav)').remove();
 
@@ -98,51 +99,62 @@ clc = (function() {
     function hashChange() {
         switch (location.hash) {
             case '#cities':
-                $containerEl1.hide();
-                $containerEl2.show();
-                $containerEl3.hide();
+                if (clc.previousHash == '#jobs') {
+                    animate($containerEl3, $containerEl2, false);
+                } else {
+                    animate($containerEl1, $containerEl2, true);
+                }
+                $backEl1.show();
+                $backEl2.hide();
+                $forwardEl1.hide();
+                if (clc.showForwardEl2) {
+                    $forwardEl2.show();
+                }
+                clc.showForwardEl1 = true;
                 break;
             case '#jobs':
-                $containerEl1.hide();
-                $containerEl2.hide();
-                $containerEl3.show();
+                animate($containerEl2, $containerEl3, true);
+                $backEl1.hide();
+                $backEl2.show();
+                $forwardEl1.hide();
+                $forwardEl2.hide();
+                clc.showForwardEl2 = true;
                 break;
             default:
-                $containerEl1.show();
-                $containerEl2.hide();
-                $containerEl3.hide();
+                animate($containerEl2, $containerEl1, false);
+                $backEl1.hide();
+                $backEl2.hide();
+                if (clc.showForwardEl1) {
+                    $forwardEl1.show();
+                }
+                $forwardEl2.hide();
                 break;
         }
-    }
-
-    function back(loc) {
-        if (loc == 1) {
-            $containerEl2.hide();
-            $containerEl1.show();
-            $forwardEl1.show();
-        } else {
-            $containerEl3.hide();
-            $containerEl2.show();
-            $forwardEl2.show();
-        }
-        history.back();
-    }
-
-    function forward(loc) {
-        if (loc == 1) {
-            $containerEl1.hide();
-            $containerEl2.show();
-        } else {
-            $containerEl2.hide();
-            $containerEl3.show();
-        }
-        history.forward();
+        clc.previousHash = location.hash;
+        document.body.scrollTop = 0;
     }
 
     function clearField(event) {
         var input = $(this).closest('div').find('input[type="text"]');
         input.val('');   
         input.focus();
+    }
+
+    function animate($el1, $el2, left) {
+        $el1.hide();
+        $el2.show();
+        if (!clc.isMobile) {
+            return;
+        }
+        if (left) {
+            $el1.css({ left: -screen.width });
+            $el2.css({ left: screen.width });
+            $el2.animate({ left: 0 });
+        } else {
+            $el1.css({ left: screen.width });
+            $el2.css({ left: -screen.width });
+            $el2.animate({ left: 0 });
+        }
     }
 
     $.get('/autocomplete').then(function(results) {
@@ -153,6 +165,14 @@ clc = (function() {
         });
     });
 
+    if (screen.width < 1025) {
+        clc.isMobile = true;
+        $backEl1     = $('.header > .nav-back-1');
+        $backEl2     = $('.header > .nav-back-2');
+        $forwardEl1  = $('.header > .nav-forward-1');
+        $forwardEl2  = $('.header > .nav-forward-2');
+    }
+
     return {
         citySearch: citySearch,
         jobSearch: jobSearch,
@@ -161,8 +181,6 @@ clc = (function() {
         storeCheckedPreference: storeCheckedPreference,
         checkAll: checkAll,
         hashChange: hashChange,
-        back: back,
-        forward: forward,
         clearField: clearField
     };
 
@@ -171,7 +189,11 @@ clc = (function() {
 $(document).ready(function() {
     $('button#citysearch').on('click', clc.citySearch);
     $('.clear-x').on('click', clc.clearField);
-    location.hash = '';
+    clc.previousHash = location.hash = '#';
     $(window).on('hashchange', clc.hashChange);
+    var defaultcity = localStorage.getItem('defaultcity');
+    if (defaultcity) {
+        $('[name="defaultcity"]').val(defaultcity);
+    }
 });
 

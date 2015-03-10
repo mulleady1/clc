@@ -76,15 +76,20 @@ a:hover, a:active {
 .city-name {
     margin-left: 20px;
 }
-#job-search-results, #city-search-results {
+#city-search-results, #job-search-results {
     display: none;
 }
-.nav {
-    display: inline-block;
+#city-search-form, #city-search-results, #job-search-results {
+    position: relative;
 }
-.nav a {
-    cursor: pointer;
-    margin-right: 15px;
+.nav {
+    display: none;
+}
+.nav-back {
+    float: left;
+}
+.nav-forward {
+    float: right;
 }
 .nav img {
     width: 10px;
@@ -96,6 +101,10 @@ a:hover, a:active {
 }
 .clear-x {
     display: none;
+}
+.clearfix {
+    clear: both;
+    display: block;
 }
 @media (max-width: 1024px) {
     .container {
@@ -109,19 +118,23 @@ a:hover, a:active {
         right: 29px;
         display: inline;
     }
-    .nav {
-        position: absolute;
-        top: 11px;
-    }
-    .nav-back {
-        left: 13px;
-    }
-    .nav-forward {
-        right: 0px;
-    }
     .title {
         text-align: center;
+        font-size: 1.1em;
         padding: 0;
+    }
+    .header > .nav {
+        padding: 4px 10px;
+    }
+    .header > .nav-back {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .header > .nav-forward {
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 }
 @media (min-width: 480px) {
@@ -132,3 +145,6 @@ a:hover, a:active {
         height: 200px;
     }
 }
+@media (min-width: 1024px) {
+}
+

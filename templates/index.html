@@ -10,14 +10,27 @@
 </head>
 <body>
 <div class="header">
+    <div class="nav nav-back nav-back-1">
+        <a class="back back-1" href="#"><img src="{{ url_for('static', filename='back_arrow.png') }}"></a>
+    </div>
+    <div class="nav nav-back nav-back-2">
+        <a class="back back-2" href="#cities"><img src="{{ url_for('static', filename='back_arrow.png') }}"></a>
+    </div>
     <div class="title header-content">
         clc
     </div>
+    <div class="nav nav-forward nav-forward-1"> 
+        <a class="forward forward-1" href="#cities"><img src="{{ url_for('static', filename='forward_arrow.png') }}"></a>
+    </div>
+    <div class="nav nav-forward nav-forward-2">
+        <a class="forward forward-2" href="#jobs"><img src="{{ url_for('static', filename='forward_arrow.png') }}"></a>
+    </div>
 </div>
 <div class="container" id="city-search-form">
-    <div class="nav nav-forward">
-        <a class="forward forward-1" style="display: none" onclick="clc.forward(1)"><img src="{{ url_for('static', filename='forward_arrow.png') }}"></a>
+    <div class="nav nav-forward nav-forward-1">
+        <a class="forward forward-1" href="#cities"><img src="{{ url_for('static', filename='forward_arrow.png') }}"></a>
     </div>
+    <div class="nav clearfix"></div>
     <form class="citysearch" action="citysearch">
         <div>
            <label class="input-label">Base city</label>
@@ -30,17 +43,19 @@
     </form>
 </div>
 <div class="container" id="city-search-results">
-    <div class="nav nav-back">
-        <a class="back back-2" onclick="clc.back(1)"><img src="{{ url_for('static', filename='back_arrow.png') }}"></a>
+    <div class="nav nav-back nav-back-1">
+        <a class="back back-2" href="#"><img src="{{ url_for('static', filename='back_arrow.png') }}"></a>
     </div>
-    <div class="nav nav-forward">
-        <a class="forward forward-2" style="display: none" onclick="clc.forward(2)"><img src="{{ url_for('static', filename='forward_arrow.png') }}"></a>
+    <div class="nav nav-forward nav-forward-2">
+        <a class="forward forward-2" href="#jobs"><img src="{{ url_for('static', filename='forward_arrow.png') }}"></a>
     </div>
+    <div class="nav clearfix"></div>
 </div>
 <div class="container" id="job-search-results">
-    <div class="nav nav-back">
-        <a class="back back-2" onclick="clc.back(2)"><img src="{{ url_for('static', filename='back_arrow.png') }}"></a>
+    <div class="nav nav-back nav-back-2">
+        <a class="back back-2" href="#cities"><img src="{{ url_for('static', filename='back_arrow.png') }}"></a>
     </div>
+    <div class="nav clearfix"></div>
 </div>
 <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
