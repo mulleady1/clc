@@ -66,7 +66,7 @@ def findNearbyCities(baseCity):
     except:
         return []
 
-def findGoodJobsByCity(city, jobcode, keywords, parttime, tele):
+def findGoodJobsByCity(city, jobcode, keywords='', parttime='', tele=''):
     try:
         baseUrl = 'http://%s.craiglist.org' % city
         jobListUrl = '%s/search/%s?query=%s&is_parttime=%s&is_telecommuting=%s' % (baseUrl, jobcode, keywords, parttime, tele)
@@ -74,7 +74,7 @@ def findGoodJobsByCity(city, jobcode, keywords, parttime, tele):
         soup = BS(requests.get(jobListUrl).text)
         p = re.compile(r'/%s/.*\.html' % jobcode)
         allLinks = soup.find_all('a')
-        jobDetailLinks = [l for l in allLinks if p.search(l.get('href')) is not None]
+        jobDetailLinks = [l for l in allLinks if l.get('href') and p.search(l.get('href')) is not None]
         processedUrls = []
         jobs = []
         for l in jobDetailLinks:
