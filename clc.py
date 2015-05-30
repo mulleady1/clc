@@ -16,7 +16,10 @@ def index():
 @app.route('/autocomplete')
 def autocomplete():
     print '***** request for /autocomplete'
-    return Response(open('autocomplete.json').read(), content_type='application/json')
+    path = os.path.join(os.path.dirname(__file__), 'autocomplete.json')
+    with open(path, 'r') as f:
+        data = f.read()
+    return Response(data, content_type='application/json')
 
 @app.route('/citysearch')
 def citySearch():
