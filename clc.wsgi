@@ -1,3 +1,4 @@
 import sys
-sys.path.insert(0, '/Users/kyle/code/clc')
+import os
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 from clc import app as application
